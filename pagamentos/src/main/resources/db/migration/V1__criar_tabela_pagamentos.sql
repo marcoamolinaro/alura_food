@@ -6,7 +6,7 @@ CREATE TABLE pagamentos (
     expiracao varchar(7) NOT NULL,
     codigo VARCHAR(3) DEFAULT NULL,
     status varchar(255) NOT NULL,
-    forma_de_pagamento bigint NOT NULL,
+    forma_de_pagamento_id bigint NOT NULL,
     pedido_id bigint NOT NULL,
   PRIMARY KEY (id)
 );

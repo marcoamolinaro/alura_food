@@ -15,15 +15,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/pagamentos")
+@RequestMapping("pagamentos")
 public class PagamentoController {
 
     @Autowired
     private PagamentoService service;
 
     @GetMapping
-    public Page<PagamentoDto> listar(@PageableDefault(size = 10) Pageable paginacao) {
-        return service.obterTodos(paginacao);
+    public ResponseEntity<Page<PagamentoDto>> listar(@PageableDefault(size = 10) Pageable paginacao) {
+        var pagamentoDto = service.obterTodos(paginacao);
+        return ResponseEntity.ok(pagamentoDto);
     }
 
     @GetMapping("/{id}")
@@ -43,7 +44,7 @@ public class PagamentoController {
         return ResponseEntity.created(endereco).body(pagamentoDto);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<PagamentoDto> atualizar(@PathVariable @NotNull Long id,
                                                   @RequestBody @Valid PagamentoDto dto) {
         PagamentoDto atualizado = service.atualizarPagamento(id, dto);
@@ -51,7 +52,7 @@ public class PagamentoController {
         return ResponseEntity.ok(atualizado);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<PagamentoDto> remover(@PathVariable @NotNull Long id) {
         service.excluirPagamento(id);
 
