@@ -37,7 +37,7 @@ public class PedidoController {
 
     @PostMapping()
     public ResponseEntity<PedidoDto> realizaPedido(@RequestBody @Valid PedidoDto dto, UriComponentsBuilder uriBuilder) {
-        PedidoDto pedidoRealizado = service.criarPedido(dto);
+            PedidoDto pedidoRealizado = service.criarPedido(dto);
 
         URI endereco = uriBuilder.path("/pedidos/{id}").buildAndExpand(pedidoRealizado.getId()).toUri();
 
