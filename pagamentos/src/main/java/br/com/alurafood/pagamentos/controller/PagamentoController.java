@@ -1,12 +1,10 @@
 package br.com.alurafood.pagamentos.controller;
 
 import br.com.alurafood.pagamentos.dto.PagamentoDto;
-import br.com.alurafood.pagamentos.repository.PagamentoRepository;
 import br.com.alurafood.pagamentos.service.PagamentoService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +26,6 @@ public class PagamentoController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    @Autowired
-    private PagamentoRepository pagamentoRepository;
-
 
     @GetMapping("/porta")
     public String retornaPorta(@Value("${local.server.port}") String porta) {
@@ -57,7 +52,7 @@ public class PagamentoController {
 
         URI endereco = uriBuilder.path("pagamentos/{id}").buildAndExpand(pagamentoDto.getId()).toUri();
 
-        rabbitTemplate.convertAndSend("pagamento.concluido", pagamentoDto);
+        rabbitTemplate.convertAndSend("pagamentos.ex","",pagamentoDto);
 
         return ResponseEntity.created(endereco).body(pagamentoDto);
     }
